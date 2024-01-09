@@ -23,10 +23,22 @@ export default function App() {
     requestRef.current = requestAnimationFrame(updateSplineState);
   }, []);
 
+  function triggerAnimation() {
+    splineRef.current.emitEvent('distance', 'pig 4');
+  }
+
   const handleKeyDown = (e) => {
     console.log('Key pressed:', e.key);
     // Implement your logic here based on the key pressed
+    if(e.key === 'z') {
+      triggerAnimation();
+    }
   };
+  function onMouseDown(e) {
+    if (e.target.name === 'Cube') {
+      console.log('I have been clicked!');
+    }
+  }
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -51,6 +63,8 @@ export default function App() {
     <Spline 
       scene="https://prod.spline.design/4OObmHyHjYqaDpe9/scene.splinecode"
       onLoad={onLoad}
+      onTimeUpdate={(time) => console.log(time)}
+      onMouseDown={onMouseDown}
     />
   );
 }
