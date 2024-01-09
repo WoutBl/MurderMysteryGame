@@ -1,53 +1,56 @@
-import { Canvas } from '@react-three/fiber'
-import Scene from './Scene'
-import './App.css';
-import * as THREE from 'three';
-import Spline from "@splinetool/react-spline"
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
+import Spline from "@splinetool/react-spline";
 
 export default function App() {
-  const x = useRef()
-  const y = useRef()
-  const z = useRef()
+  const splineRef = useRef(null); // Reference to the spline object
+  const requestRef = useRef(); // Reference for the animation frame request
 
-  const x1 = useRef()
-  const y1 = useRef()
-  const z1 = useRef()
+  const updateSplineState = useCallback(() => {
+    if (splineRef.current) {
+      const obj = splineRef.current.findObjectByName('pig');
+      const obj1 = splineRef.current.findObjectByName('pig 4');
 
+      if (obj && obj1) {
+        const distance = obj.position.distanceTo(obj1.position);
+        console.log(distance); 
 
-  function onLoad(spline) {
-    // console.log(spline.getAllObjects())
-    // console.log(spline.getSplineEvents())
-    const obj = spline.findObjectByName('pig');
-    const obj1 = spline.findObjectByName('pig 4');
-    console.log("pig gray: " + JSON.stringify(obj));
-    console.log("pig green: " + JSON.stringify(obj1));
-    if (obj !== undefined) {
-      console.log(obj.position.x)
-      console.log(obj1.position.x)
-      x.current = obj.position.x
-      y.current = obj.position.y
-      z.current = obj.position.z
-      x1.current = obj1.position.x
-      y1.current = obj1.position.y
-      z1.current = obj1.position.z
-      if (x === x1) {
-        console.log("same x")
-      }if (z === z1) {
-        console.log("same z")
-      }if (y === y1) {
-        console.log("same y")
+        if (distance < 200) {
+          console.log("Objects are close!");
+        }
       }
     }
-    
-  }
-  
+
+    requestRef.current = requestAnimationFrame(updateSplineState);
+  }, []);
+
+  const handleKeyDown = (e) => {
+    console.log('Key pressed:', e.key);
+    // Implement your logic here based on the key pressed
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(updateSplineState);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [updateSplineState]);
+
+  const onLoad = (spline) => {
+    splineRef.current = spline;
+    updateSplineState();
+  };
+
   return (
     <Spline 
       scene="https://prod.spline.design/4OObmHyHjYqaDpe9/scene.splinecode"
       onLoad={onLoad}
     />
-      
-
-  )
+  );
 }
