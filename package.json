@@ -18,6 +18,8 @@
     "react-use-refs": "^1.0.1",
     "reactjs-popup": "^2.0.6",
     "three": "^0.160.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

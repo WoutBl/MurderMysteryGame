@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Spline from "@splinetool/react-spline";
 import Popup from 'reactjs-popup';
+import { InworldService } from './ai chat/connection'
+import { Chat } from './ai chat/Chat'
 
 
 export default function App() {
+  
   const splineRef = useRef(null);
   const requestRef = useRef();
   const [isEKeyPressed, setIsEKeyPressed] = useState(false);
@@ -11,7 +14,102 @@ export default function App() {
   const [RedIsOpen, setRedIsOpen] = useState(false);
   const [PinkIsOpen, setPinkIsOpen] = useState(false);
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
+  const [connection, setConnection] = useState();
+  const [character, setCharacter] = useState();
+  const [characters, setCharacters] = useState([]);
+  const [avatar, setAvatar] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const [prevChatHistory, setPrevChatHistory] = useState([]);
+  const [prevTranscripts, setPrevTranscripts] = useState([]);
+  const [chatting, setChatting] = useState(false);
+  const [chatView, setChatView] = useState();
   
+
+  const onHistoryChange = useCallback((history) => {
+    setChatHistory(history);
+  }, []);
+
+  const openConnection = useCallback(
+    async (previousState) => {
+      
+      const currentTranscript = connection?.getTranscript() || '';
+
+      setPrevTranscripts([
+        ...prevTranscripts,
+        ...(currentTranscript ? [currentTranscript] : []),
+      ]);
+      setPrevChatHistory([...prevChatHistory, ...chatHistory]);
+      setChatHistory([]);
+      setChatting(true);
+      setChatView("Text");
+
+      const duration = 0;
+      const ticks = 0;
+      const previousDialog = false
+
+      console.log('Connecting to Inworld Service');
+      const service = new InworldService({
+        onHistoryChange,
+        ...(previousDialog.length && { continuation: { previousDialog } }),
+        ...(previousState && { continuation: { previousState } }),
+        ...(duration &&
+          ticks && {
+            audioPlayback: {
+              stop: { duration, ticks },
+            },
+          }),
+        sceneName: "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green",
+        playerName: "Detective Oink",
+        
+        onReady: async () => {
+          console.log('Ready!');
+        },
+        onDisconnect: () => {
+          console.log('Disconnect!');
+        },
+        onMessage: (inworldPacket) => {
+          if (
+            inworldPacket.isEmotion() &&
+            inworldPacket.packetId?.interactionId
+          ) {
+            console.log("lol")
+          }
+        },
+      });
+
+      const characters = await service.connection.getCharacters();
+      const character = characters.find(
+        (c) => c.resourceName === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green",
+      );
+
+      if (character) {
+        service.connection.setCurrentCharacter(character);
+
+        const assets = character?.assets;
+        const rpmImageUri = assets?.rpmImageUriPortrait;
+        const avatarImg = assets?.avatarImg;
+        setAvatar(avatarImg || rpmImageUri || '');
+      } else {
+        console.error(
+          'Character not found in scene. Was it added?:',
+          "not found",
+        );
+        return;
+      }
+
+      setConnection(service.connection);
+
+      setCharacter(character);
+      setCharacters(characters);
+    },
+    [
+      chatHistory,
+      connection,
+      onHistoryChange,
+      prevChatHistory,
+      prevTranscripts,
+    ],
+  );
   
 
   const checkDistances = useCallback(() => {
@@ -28,7 +126,7 @@ export default function App() {
         const distancegreen = obj.position.distanceTo(obj1.position);
         const distancered = obj.position.distanceTo(obj2.position);
         const distancepink = obj.position.distanceTo(obj3.position);
-        console.log("green: " + distancegreen + ", red: " + distancered + ", pink: " + distancepink)
+        
 
         
           let closest = { distance: Infinity, position: null, name: '' };
@@ -132,6 +230,7 @@ export default function App() {
   }, [updateSplineState]);
 
   const onLoad = (spline) => {
+    openConnection();
     splineRef.current = spline;
     updateSplineState();
   };
@@ -141,6 +240,11 @@ export default function App() {
       <Spline
         scene="https://prod.spline.design/QBB4OjMubbnPuZoD/scene.splinecode"
         onLoad={onLoad}
+      />
+      <Chat
+        connection={connection}
+        chatHistory={chatHistory}
+        
       />
         <Popup open={GreenIsOpen || RedIsOpen || PinkIsOpen} position="right center">
         

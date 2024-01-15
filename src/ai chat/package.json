@@ -1,0 +1,14 @@
+{
+  "name": "ai-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "connection.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@inworld/web-core": "^2.1.0"
+  }
+}
