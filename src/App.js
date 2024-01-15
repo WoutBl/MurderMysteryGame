@@ -132,42 +132,33 @@ export default function App() {
           let closest = { distance: Infinity, position: null, name: '' };
           if (distancegreen > 459) {
             if (isEKeyPressed) {
-              if(GreenIsOpen === true) {
-                setGreenIsOpen(false);
-              }
-              else {
+              if(GreenIsOpen === false) {
                 setGreenIsOpen(true);
               }
             }
             
-            closest = { distance: distancegreen, position: obj1.position, name: 'Green' };
+            closest = { distance: distancegreen, position: obj1.position, name: 'Piglett' };
           }
           else{
             setGreenIsOpen(false);
           }
           if (distancered > 555.2) {
             if (isEKeyPressed) {
-              if(RedIsOpen === true) {
-                setRedIsOpen(false);
-              }
-              else {
+              if(RedIsOpen === false) {
                 setRedIsOpen(true);
               }
             }
-            closest = { distance: distancered, position: obj2.position, name: 'Red' };
+            closest = { distance: distancered, position: obj2.position, name: 'Porkchop' };
           }else{
             setRedIsOpen(false);
           }
           if (distancepink < 907.9) {
             if (isEKeyPressed) {
-              if(PinkIsOpen === true) {
-                setPinkIsOpen(false);
-              }
-              else {
+              if(PinkIsOpen === false) {
                 setPinkIsOpen(true);
               }
             }
-            closest = { distance: distancepink, position: obj3.position, name: 'Pink' };
+            closest = { distance: distancepink, position: obj3.position, name: 'Hamm' };
           }
           else{
             setPinkIsOpen(false);
@@ -235,29 +226,38 @@ export default function App() {
     updateSplineState();
   };
 
+  const onClose = () => {
+    setGreenIsOpen(false);
+    setRedIsOpen(false);
+    setPinkIsOpen(false);
+  }
+
   return (
     <div>
       <Spline
         scene="https://prod.spline.design/QBB4OjMubbnPuZoD/scene.splinecode"
         onLoad={onLoad}
       />
-      <Chat
-        connection={connection}
-        chatHistory={chatHistory}
+      
+        <Popup onClose={onClose} open={GreenIsOpen || RedIsOpen || PinkIsOpen} position="right center">
         
-      />
-        <Popup open={GreenIsOpen || RedIsOpen || PinkIsOpen} position="right center">
-        
-          <div class="relative p-4 w-full max-w-2xl max-h-full">
+          <div class="relative  p-4 w-full max-w-2xl ">
               <div class="relative  bg-white rounded-lg shadow dark:bg-gray-700">
-                  <div class="flex items-center  justify-center p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                  <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                       <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                           {popupInfo.name}
                       </h3>
+                      <button onClick={onClose}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                      </button>
                   </div>
-                  <div class="p-4  md:p-5 space-y-4">
+                  <div class="p-4 md:p-5 space-y-4">
                     <div class="flex justify-center">
-                        <input type="text" class="w-96  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
+                        <Chat
+                          connection={connection}
+                          chatHistory={chatHistory}
+                          popupInfo={popupInfo}
+                        />
                     </div>
                   </div>
                   
