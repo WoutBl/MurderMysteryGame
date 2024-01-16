@@ -70,6 +70,13 @@ const client = new InworldClient()
   })
   .setScene(process.env.INWORLD_SCENE!);
 
+const client1 = new InworldClient()
+  .setApiKey({
+    key: process.env.INWORLD_KEY!,
+    secret: process.env.INWORLD_SECRET!,
+  })
+  .setScene(process.env.INWORLD_SCENE!);
+
 const app = express();
 
 app.use(cors());
@@ -80,6 +87,15 @@ app.get('/', async (_, res) => {
 
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(token));
+
+});
+app.get('/red', async (_, res) => {
+  console.log('Generating session key for:', process.env.INWORLD_SCENE1);
+  const token1 = await client1.generateSessionToken();
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(token1));
+
 });
 
 if (USE_SSL) {

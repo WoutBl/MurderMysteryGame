@@ -11,6 +11,7 @@ import {
 
 import { Config } from './config';
 
+
 interface InworldServiceProps {
   audioPlayback?: AudioPlaybackConfig;
   capabilities: Capabilities;
@@ -28,7 +29,6 @@ export class InworldService {
   connection: InworldConnectionService;
 
   constructor(props: InworldServiceProps) {
-    
     const client = new InworldClient()
       .setConfiguration({
         capabilities: props.capabilities,
@@ -36,7 +36,7 @@ export class InworldService {
       })
       .setUser({ fullName: props.playerName })
       .setScene(props.sceneName)
-      .setGenerateSessionToken(this.generateSessionToken)
+      .setGenerateSessionToken(() => this.generateSessionToken(props.sceneName)) // Fix: Ensure generateSessionToken returns Promise<SessionToken>
       .setOnError((err) => console.log(err))
       .setOnReady(props.onReady)
       .setOnMessage(props.onMessage)
@@ -55,9 +55,15 @@ export class InworldService {
   }
   
 
-  private async generateSessionToken() {
-    const response = await fetch(Config.GENERATE_TOKEN_URL);
-    console.log(response);
-    return response.json();
+  private async generateSessionToken(scene: String) {
+    if(scene === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green"){
+      const response = await fetch(Config.GENERATE_TOKEN_URL);
+      console.log(response);
+      return response.json();
+    }if(scene === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red"){
+      const response = await fetch(Config.GENERATE_TOKEN_URL1);
+      console.log(response);
+      return response.json();
+    }
   }
 }

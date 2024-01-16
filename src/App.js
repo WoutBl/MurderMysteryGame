@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Spline from "@splinetool/react-spline";
 import Popup from 'reactjs-popup';
 import { InworldService } from './ai chat/connection'
-import { Chat } from './ai chat/Chat'
+import { Chat, Chat1 } from './ai chat/Chat'
 
 
 export default function App() {
@@ -14,6 +14,7 @@ export default function App() {
   const [RedIsOpen, setRedIsOpen] = useState(false);
   const [PinkIsOpen, setPinkIsOpen] = useState(false);
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
+
   const [connection, setConnection] = useState();
   const [character, setCharacter] = useState();
   const [characters, setCharacters] = useState([]);
@@ -23,11 +24,19 @@ export default function App() {
   const [prevTranscripts, setPrevTranscripts] = useState([]);
   const [chatting, setChatting] = useState(false);
   const [chatView, setChatView] = useState();
+
+  const [connection1, setConnection1] = useState();
+  const [character1, setCharacter1] = useState();
+  const [characters1, setCharacters1] = useState([]);
+  const [avatar1, setAvatar1] = useState('');
+  const [chatHistory1, setChatHistory1] = useState([]);
+  const [prevChatHistory1, setPrevChatHistory1] = useState([]);
+  const [prevTranscripts1, setPrevTranscripts1] = useState([]);
+  const [chatting1, setChatting1] = useState(false);
+  const [chatView1, setChatView1] = useState();
   
 
-  const onHistoryChange = useCallback((history) => {
-    setChatHistory(history);
-  }, []);
+ 
 
   const openConnection = useCallback(
     async (previousState) => {
@@ -49,7 +58,9 @@ export default function App() {
 
       console.log('Connecting to Inworld Service');
       const service = new InworldService({
-        onHistoryChange,
+        onHistoryChange: async (history) => {
+          setChatHistory1(history);
+        },
         ...(previousDialog.length && { continuation: { previousDialog } }),
         ...(previousState && { continuation: { previousState } }),
         ...(duration &&
@@ -105,13 +116,94 @@ export default function App() {
     [
       chatHistory,
       connection,
-      onHistoryChange,
+      
       prevChatHistory,
       prevTranscripts,
     ],
   );
   
+  const openConnection1 = useCallback(
+    async (previousState) => {
+      
+      const currentTranscript = connection1?.getTranscript() || '';
+      
+      setPrevTranscripts1([
+        ...prevTranscripts1,
+        ...(currentTranscript ? [currentTranscript] : []),
+      ]);
+      setPrevChatHistory1([...prevChatHistory1, ...chatHistory1]);
+      setChatHistory1([]);
+      setChatting1(true);
+      setChatView1("Text");
 
+      const duration = 0;
+      const ticks = 0;
+      const previousDialog = false
+
+      console.log('Connecting to Inworld Service');
+      const service = new InworldService({
+        onHistoryChange: async (history) => {
+          setChatHistory1(history);
+        },
+        ...(previousDialog.length && { continuation: { previousDialog } }),
+        ...(previousState && { continuation: { previousState } }),
+        ...(duration &&
+          ticks && {
+            audioPlayback: {
+              stop: { duration, ticks },
+            },
+          }),
+        sceneName: "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red",
+        playerName: "Detective Oink",
+        
+        onReady: async () => {
+          console.log('Ready!');
+        },
+        onDisconnect: () => {
+          console.log('Disconnect!');
+        },
+        onMessage: (inworldPacket) => {
+          if (
+            inworldPacket.isEmotion() &&
+            inworldPacket.packetId?.interactionId
+          ) {
+            console.log("lol")
+          }
+        },
+      });
+
+      const characters = await service.connection.getCharacters();
+      const character = characters.find(
+        (c) => c.resourceName === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red",
+      );
+
+      if (character) {
+        console.log("character found"+JSON.stringify(character))
+        service.connection.setCurrentCharacter(character);
+
+        const assets = character?.assets;
+        const rpmImageUri = assets?.rpmImageUriPortrait;
+        const avatarImg = assets?.avatarImg;
+        setAvatar1(avatarImg || rpmImageUri || '');
+      } else {
+        console.error(
+          'Character not found in scene. Was it added?:',
+          character,
+        );
+        return;
+      }
+      setConnection1(service.connection);
+
+      setCharacter1(character);
+      setCharacters1(characters);
+    },
+    [
+      chatHistory1,
+      connection1,
+      prevChatHistory1,
+      prevTranscripts1,
+    ],
+  );
   const checkDistances = useCallback(() => {
     if (splineRef.current) {
       const obj = splineRef.current.findObjectByName('pig');
@@ -222,6 +314,7 @@ export default function App() {
 
   const onLoad = (spline) => {
     openConnection();
+    openConnection1();
     splineRef.current = spline;
     updateSplineState();
   };
@@ -241,23 +334,39 @@ export default function App() {
       
         <Popup onClose={onClose} open={GreenIsOpen || RedIsOpen || PinkIsOpen} position="right center">
         
-          <div class="relative  p-4 w-full max-w-2xl ">
-              <div class="relative  bg-white rounded-lg shadow dark:bg-gray-700">
-                  <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          <div className="relative  p-4 w-full max-w-2xl ">
+              <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                           {popupInfo.name}
                       </h3>
                       <button onClick={onClose}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                       </button>
                   </div>
-                  <div class="p-4 md:p-5 space-y-4">
-                    <div class="flex justify-center">
-                        <Chat
-                          connection={connection}
-                          chatHistory={chatHistory}
-                          popupInfo={popupInfo}
-                        />
+                  <div className="p-4 md:p-5 space-y-4">
+                    <div className="flex justify-center">
+                        {
+                          GreenIsOpen === true ?
+                            <Chat
+                              connection={connection}
+                              chatHistory={chatHistory}
+                              popupInfo={popupInfo}
+                            />
+                          : null
+                          
+                        }
+                        {
+                          RedIsOpen === true ?
+                            <Chat1
+                              connection={connection1}
+                              chatHistory={chatHistory1}
+                              popupInfo={popupInfo}
+                            />
+                          :
+                          null
+                        }
+                        
                     </div>
                   </div>
                   

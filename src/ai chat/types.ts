@@ -12,6 +12,7 @@ export type Configuration = {
   DEFAULT_ANIMATION: string;
   DRACO_COMPRESSION_URI: string;
   GENERATE_TOKEN_URL: string;
+  GENERATE_TOKEN_URL1: string;
   IMAGES_BODY_URI: string;
   IMAGES_FACIAL_URI: string;
   INWORLD_CHARACTER: string | undefined;
