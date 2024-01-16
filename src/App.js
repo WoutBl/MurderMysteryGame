@@ -313,17 +313,50 @@ export default function App() {
   }, [updateSplineState]);
 
   const onLoad = (spline) => {
-    openConnection();
-    openConnection1();
+    
     splineRef.current = spline;
     updateSplineState();
   };
+  const onOpen = () => {
+
+    openConnection();
+  }
+
+  const onOpen1 = () => {
+
+    openConnection1();
+  }
+  
 
   const onClose = () => {
+    console.log("close green")
+    stopChatting();
     setGreenIsOpen(false);
-    setRedIsOpen(false);
-    setPinkIsOpen(false);
+
   }
+
+  const onClose1 = () => {
+    console.log("close red")
+    stopChatting1();
+    setRedIsOpen(false);
+  }
+
+  const stopChatting = useCallback(async () => {
+    // Disable flags
+    setChatting(false);
+
+    // Close connection and clear connection data
+    connection?.close();
+
+  }, [connection]);
+
+  const stopChatting1 = useCallback(async () => {
+    // Disable flags
+    setChatting1(false);
+
+    // Close connection and clear connection data
+    connection?.close();
+  }, [connection]);
 
   return (
     <div>
@@ -332,7 +365,7 @@ export default function App() {
         onLoad={onLoad}
       />
       
-        <Popup onClose={onClose} open={GreenIsOpen || RedIsOpen || PinkIsOpen} position="right center">
+        <Popup onClose={onClose} open={GreenIsOpen} onOpen={onOpen} position="right center">
         
           <div className="relative  p-4 w-full max-w-2xl ">
               <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
@@ -346,26 +379,40 @@ export default function App() {
                   </div>
                   <div className="p-4 md:p-5 space-y-4">
                     <div className="flex justify-center">
-                        {
-                          GreenIsOpen === true ?
+                        
                             <Chat
                               connection={connection}
                               chatHistory={chatHistory}
                               popupInfo={popupInfo}
                             />
-                          : null
                           
-                        }
-                        {
-                          RedIsOpen === true ?
+                    </div>
+                  </div>
+                  
+              </div>
+          </div>
+        </Popup>
+        <Popup onClose={onClose1} open={RedIsOpen} onOpen={onOpen1} position="right center">
+        
+          <div className="relative  p-4 w-full max-w-2xl ">
+              <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          {popupInfo.name}
+                      </h3>
+                      <button onClick={onClose1}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                      </button>
+                  </div>
+                  <div className="p-4 md:p-5 space-y-4">
+                    <div className="flex justify-center">
+
                             <Chat1
                               connection={connection1}
-                              chatHistory={chatHistory1}
+                              chatHistory1={chatHistory1}
                               popupInfo={popupInfo}
                             />
-                          :
-                          null
-                        }
+                          
                         
                     </div>
                   </div>

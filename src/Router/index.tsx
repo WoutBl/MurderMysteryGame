@@ -2,9 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 //@ts-ignore
-import App from './App';
-import Home from './Views/Home';
-import "./index.css"
+import { App } from '../App';
+import Home from '../Views/Home';
 
 
 
@@ -16,7 +15,7 @@ const router = createBrowserRouter([
   },
 {
     path: '/Game',
-    element: <App className="m-0" />,
+    element: <App />,
 },
   // make not found page
   // {
@@ -33,7 +32,7 @@ if (rootElement) {
     const root = ReactDOM.createRoot(rootElement);
     root.render(
         <React.StrictMode>
-            <RouterProvider  router={router} />
+            <RouterProvider router={router} />
         </React.StrictMode>
     );
     

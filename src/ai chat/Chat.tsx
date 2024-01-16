@@ -9,7 +9,7 @@ interface ChatProps {
   popupInfo: any;
 }
 interface Chat1Props {
-  chatHistory: HistoryItem[];
+  chatHistory1: HistoryItem[];
   connection: InworldConnectionService;
 
   popupInfo: any;
@@ -107,10 +107,10 @@ export function Chat(props: ChatProps) {
 
 
 export function Chat1(props: Chat1Props) {
-  const { chatHistory, connection, popupInfo } = props;
+  const { chatHistory1, connection, popupInfo } = props;
 
   
-  const chatHistoryList = chatHistory.map((chat, index) => {
+  const chatHistoryList1 = chatHistory1.map((chat, index) => {
     if (chat.type !== 'interaction_end') {
       if (chat.source.isPlayer) {
         // Code to execute if isPlayer is true
@@ -172,7 +172,7 @@ export function Chat1(props: Chat1Props) {
   
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory]);
+  }, [chatHistory1]);
 
 
 
@@ -182,7 +182,7 @@ export function Chat1(props: Chat1Props) {
   return(
     <div className=''>
         <div className='max-h-96 overflow-y-auto'>
-          {chatHistoryList}
+          {chatHistoryList1}
           <div ref={messagesEndRef} />
         </div> 
         <input type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
