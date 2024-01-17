@@ -303,10 +303,7 @@ export default function App() {
 
   const onLoad = (spline) => {
     
-    if(count === 1){
-      setIsLoading(false)
-    }
-    count += 1
+    setIsLoading(false)
       
     openConnection();
     openConnection1();
