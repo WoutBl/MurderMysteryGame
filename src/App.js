@@ -252,6 +252,14 @@ export default function App() {
   }, [checkDistances]);
 
   useEffect(() => {
+    const handleTouchStart = () => {
+      setIsEKeyPressed(true);
+    };
+  
+    const handleTouchEnd = () => {
+      setIsEKeyPressed(false);
+    };
+
     const handleKeyDown = (event) => {
       if (event.key === 'e') {
         setIsEKeyPressed(true);
@@ -266,6 +274,8 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
 
     requestRef.current = requestAnimationFrame(updateSplineState);
 
@@ -273,6 +283,8 @@ export default function App() {
       cancelAnimationFrame(requestRef.current);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [updateSplineState]);
 
