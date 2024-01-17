@@ -16,27 +16,23 @@ export default function App() {
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
 
   const [connection, setConnection] = useState();
-  const [character, setCharacter] = useState();
-  const [characters, setCharacters] = useState([]);
-  const [avatar, setAvatar] = useState('');
+
   const [chatHistory, setChatHistory] = useState([]);
   const [prevChatHistory, setPrevChatHistory] = useState([]);
   const [prevTranscripts, setPrevTranscripts] = useState([]);
-  const [chatting, setChatting] = useState(false);
-  const [chatView, setChatView] = useState();
+
 
   const [connection1, setConnection1] = useState();
-  const [character1, setCharacter1] = useState();
-  const [characters1, setCharacters1] = useState([]);
-  const [avatar1, setAvatar1] = useState('');
+
   const [chatHistory1, setChatHistory1] = useState([]);
   const [prevChatHistory1, setPrevChatHistory1] = useState([]);
   const [prevTranscripts1, setPrevTranscripts1] = useState([]);
-  const [chatting1, setChatting1] = useState(false);
-  const [chatView1, setChatView1] = useState();
-  
 
- 
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [LoadingHTML, setLoadingHTML] = useState();
+
+  let count = 0
 
   const openConnection = useCallback(
     async (previousState) => {
@@ -49,8 +45,7 @@ export default function App() {
       ]);
       setPrevChatHistory([...prevChatHistory, ...chatHistory]);
       setChatHistory([]);
-      setChatting(true);
-      setChatView("Text");
+
 
       const duration = 0;
       const ticks = 0;
@@ -59,7 +54,7 @@ export default function App() {
       console.log('Connecting to Inworld Service');
       const service = new InworldService({
         onHistoryChange: async (history) => {
-          setChatHistory1(history);
+          setChatHistory(history);
         },
         ...(previousDialog.length && { continuation: { previousDialog } }),
         ...(previousState && { continuation: { previousState } }),
@@ -86,7 +81,7 @@ export default function App() {
             console.log("lol")
           }
         },
-      });
+      }); 
 
       const characters = await service.connection.getCharacters();
       const character = characters.find(
@@ -96,10 +91,6 @@ export default function App() {
       if (character) {
         service.connection.setCurrentCharacter(character);
 
-        const assets = character?.assets;
-        const rpmImageUri = assets?.rpmImageUriPortrait;
-        const avatarImg = assets?.avatarImg;
-        setAvatar(avatarImg || rpmImageUri || '');
       } else {
         console.error(
           'Character not found in scene. Was it added?:',
@@ -109,9 +100,6 @@ export default function App() {
       }
 
       setConnection(service.connection);
-
-      setCharacter(character);
-      setCharacters(characters);
     },
     [
       chatHistory,
@@ -133,8 +121,6 @@ export default function App() {
       ]);
       setPrevChatHistory1([...prevChatHistory1, ...chatHistory1]);
       setChatHistory1([]);
-      setChatting1(true);
-      setChatView1("Text");
 
       const duration = 0;
       const ticks = 0;
@@ -180,11 +166,6 @@ export default function App() {
       if (character) {
         console.log("character found"+JSON.stringify(character))
         service.connection.setCurrentCharacter(character);
-
-        const assets = character?.assets;
-        const rpmImageUri = assets?.rpmImageUriPortrait;
-        const avatarImg = assets?.avatarImg;
-        setAvatar1(avatarImg || rpmImageUri || '');
       } else {
         console.error(
           'Character not found in scene. Was it added?:',
@@ -193,9 +174,6 @@ export default function App() {
         return;
       }
       setConnection1(service.connection);
-
-      setCharacter1(character);
-      setCharacters1(characters);
     },
     [
       chatHistory1,
@@ -264,23 +242,9 @@ export default function App() {
         }
       
     }
-  }, [isEKeyPressed]);
+  }, [isEKeyPressed, GreenIsOpen, RedIsOpen, PinkIsOpen]);
 
 
-//   function toScreenPosition(obj, camera) {
-//     const tempVector = new THREE.Vector3();
-
-//     // project 3D position to the 2D screen space
-//     obj.updateMatrixWorld();
-//     tempVector.setFromMatrixPosition(obj.matrixWorld);
-//     tempVector.project(camera);
-
-//     // convert normalized device coordinate (NDC) space to canvas space
-//     const x = (tempVector.x * 0.5 + 0.5) 
-//     const y = -(tempVector.y * 0.5 - 0.5)
-
-//     return { x, y };
-// }
 
   const updateSplineState = useCallback(() => {
     checkDistances();
@@ -312,60 +276,66 @@ export default function App() {
     };
   }, [updateSplineState]);
 
+  useEffect(() => {
+    if (isLoading) {
+      setLoadingHTML(
+        <div className="absolute top-0 left-0 h-screen w-screen flex  bg-gray-700/50">
+          <div className='absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2 flex flex-col items-center'>
+            <svg aria-hidden="true" className=" w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-gray-900" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                
+            </svg>
+            <strong className='mt-5 text-xl'>Loading Game</strong>
+          </div>
+          
+          
+      </div>
+      )
+    }else{
+      setLoadingHTML(
+        <div></div>
+      )
+    }
+  }, [isLoading]);
+
+  
+
   const onLoad = (spline) => {
     
+    if(count === 1){
+      setIsLoading(false)
+    }
+    count += 1
+      
+    openConnection();
+    openConnection1();
     splineRef.current = spline;
     updateSplineState();
   };
-  const onOpen = () => {
-
-    openConnection();
-  }
-
-  const onOpen1 = () => {
-
-    openConnection1();
-  }
   
 
   const onClose = () => {
     console.log("close green")
-    stopChatting();
     setGreenIsOpen(false);
 
   }
 
   const onClose1 = () => {
     console.log("close red")
-    stopChatting1();
     setRedIsOpen(false);
   }
 
-  const stopChatting = useCallback(async () => {
-    // Disable flags
-    setChatting(false);
-
-    // Close connection and clear connection data
-    connection?.close();
-
-  }, [connection]);
-
-  const stopChatting1 = useCallback(async () => {
-    // Disable flags
-    setChatting1(false);
-
-    // Close connection and clear connection data
-    connection?.close();
-  }, [connection]);
+  
 
   return (
-    <div>
+    <div className='h-screen relative'>
       <Spline
-        scene="https://prod.spline.design/QBB4OjMubbnPuZoD/scene.splinecode"
+        scene="https://prod.spline.design/GYIVEIdMlDugd5IJ/scene.splinecode"
         onLoad={onLoad}
       />
-      
-        <Popup onClose={onClose} open={GreenIsOpen} onOpen={onOpen} position="right center">
+      {LoadingHTML}
+        <Popup onClose={onClose} open={GreenIsOpen}  position="right center">
         
           <div className="relative  p-4 w-full max-w-2xl ">
               <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
@@ -392,7 +362,7 @@ export default function App() {
               </div>
           </div>
         </Popup>
-        <Popup onClose={onClose1} open={RedIsOpen} onOpen={onOpen1} position="right center">
+        <Popup onClose={onClose1} open={RedIsOpen} position="right center">
         
           <div className="relative  p-4 w-full max-w-2xl ">
               <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">

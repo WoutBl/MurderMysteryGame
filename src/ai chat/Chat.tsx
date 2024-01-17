@@ -17,7 +17,7 @@ interface Chat1Props {
 
 export function Chat(props: ChatProps) {
   const { chatHistory, connection, popupInfo } = props;
-  
+  console.log("Pig Green"+chatHistory);
   const chatHistoryList = chatHistory.map((chat, index) => {
     if (chat.type !== 'interaction_end') {
       if (chat.source.isPlayer) {
@@ -50,6 +50,10 @@ export function Chat(props: ChatProps) {
           </div>
         );
       }
+    }else{
+      return (
+        <div></div>
+      );
     }
   });
 
@@ -66,7 +70,7 @@ export function Chat(props: ChatProps) {
         connection?.sendText(text);
         setText('');
     }
-  }, [connection, text, popupInfo]);
+  }, [connection, text]);
   
   const handleTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -109,7 +113,7 @@ export function Chat(props: ChatProps) {
 export function Chat1(props: Chat1Props) {
   const { chatHistory1, connection, popupInfo } = props;
 
-  
+  console.log("Pig Red"+chatHistory1);
   const chatHistoryList1 = chatHistory1.map((chat, index) => {
     if (chat.type !== 'interaction_end') {
       if (chat.source.isPlayer) {
@@ -142,6 +146,10 @@ export function Chat1(props: Chat1Props) {
           </div>
         );
       }
+    } else{
+      return(
+        <div></div>
+      )
     }
   });
 
@@ -158,7 +166,7 @@ export function Chat1(props: Chat1Props) {
         setText('');
       
     }
-  }, [connection, text, popupInfo]);
+  }, [connection, text]);
   
   const handleTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -181,7 +189,7 @@ export function Chat1(props: Chat1Props) {
 
   return(
     <div className=''>
-        <div className='max-h-96 overflow-y-auto'>
+        <div className='max-h-96 mb-5 overflow-y-auto scroll_track scroll_bar scroll_thumb'>
           {chatHistoryList1}
           <div ref={messagesEndRef} />
         </div> 

@@ -58,11 +58,9 @@ export class InworldService {
   private async generateSessionToken(scene: String) {
     if(scene === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green"){
       const response = await fetch(Config.GENERATE_TOKEN_URL);
-      console.log(response);
       return response.json();
     }if(scene === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red"){
       const response = await fetch(Config.GENERATE_TOKEN_URL1);
-      console.log(response);
       return response.json();
     }
   }
