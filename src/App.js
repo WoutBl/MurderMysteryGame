@@ -32,8 +32,6 @@ export default function App() {
 
   const [LoadingHTML, setLoadingHTML] = useState();
 
-  let count = 0
-
   const openConnection = useCallback(
     async (previousState) => {
       
