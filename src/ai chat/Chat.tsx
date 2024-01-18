@@ -94,7 +94,7 @@ export function Chat(props: ChatProps) {
     
     
     <div className=''>
-        <div className='max-h-96 overflow-y-auto'>
+        <div className='max-h-96 mb-5 overflow-y-auto scroll_track scroll_bar scroll_thumb'>
           {chatHistoryList}
           <div ref={messagesEndRef} />
         </div> 
