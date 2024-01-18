@@ -111,6 +111,7 @@ export function Chat(props: ChatProps) {
 
 export function Chat1(props: Chat1Props) {
   const { chatHistory1, connection, popupInfo } = props;
+
   const chatHistoryList1 = chatHistory1.map((chat, index) => {
     if (chat.type !== 'interaction_end') {
       if (chat.source.isPlayer) {
