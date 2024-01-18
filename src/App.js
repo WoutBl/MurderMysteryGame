@@ -76,7 +76,7 @@ export default function App() {
             inworldPacket.isEmotion() &&
             inworldPacket.packetId?.interactionId
           ) {
-            console.log("lol")
+            console.log("Emotion")
           }
         },
       }); 
@@ -162,7 +162,6 @@ export default function App() {
       );
 
       if (character) {
-        console.log("character found"+JSON.stringify(character))
         service.connection.setCurrentCharacter(character);
       } else {
         console.error(

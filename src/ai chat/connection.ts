@@ -43,15 +43,12 @@ export class InworldService {
       .setOnPhoneme(props.onPhoneme)
       .setOnHistoryChange(props.onHistoryChange)
       .setOnDisconnect(props.onDisconnect);
-      
-      console.log(client)
 
     if (props.continuation) {
       client.setSessionContinuation(props.continuation);
     }
 
     this.connection = client.build();
-    console.log(this.connection)
   }
   
 
