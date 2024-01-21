@@ -18,7 +18,8 @@ interface Chat1Props {
 export function Chat(props: ChatProps) {
   const { chatHistory, connection, popupInfo } = props;
   const chatHistoryList = chatHistory.map((chat, index) => {
-    if (chat.type !== 'interaction_end') {
+    if (chat.type !== 'interaction_end' && chat.type !== 'trigger_event') {
+      
       if (chat.source.isPlayer) {
         // Code to execute if isPlayer is true
         return (
@@ -49,11 +50,13 @@ export function Chat(props: ChatProps) {
           </div>
         );
       }
-    }else{
+    }
+    else if(chat.type === "trigger_event"){
       return (
         <div></div>
       );
     }
+    
   });
 
   

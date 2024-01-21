@@ -13,7 +13,10 @@ export default function App() {
   const [GreenIsOpen, setGreenIsOpen] = useState(false);
   const [RedIsOpen, setRedIsOpen] = useState(false);
   const [PinkIsOpen, setPinkIsOpen] = useState(false);
+  const [KnifeIsOpen, setKnifeIsOpen] = useState(false);
+  const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
+  const knife = useRef();
 
   const [connection, setConnection] = useState();
 
@@ -185,22 +188,25 @@ export default function App() {
       const obj1 = splineRef.current.findObjectByName('pig 4');
       const obj2 = splineRef.current.findObjectByName('pig 2');
       const obj3 = splineRef.current.findObjectByName('pig 3');
+      const obj4 = splineRef.current.findObjectById('6e03b819-82b7-40c1-9fc3-f868da67c544');
       
       
       
 
-      if (obj && obj1 && obj2 && obj3) {
+      if (obj && obj1 && obj2 && obj3 && obj4) {
         const distancegreen = obj.position.distanceTo(obj1.position);
         const distancered = obj.position.distanceTo(obj2.position);
         const distancepink = obj.position.distanceTo(obj3.position);
-        
+        const distanceknife = obj.position.distanceTo(obj4.position);
+
 
         
           let closest = { distance: Infinity, position: null, name: '' };
           if (distancegreen > 459) {
             if (isEKeyPressed) {
-              if(GreenIsOpen === false) {
+              if(!GreenIsOpen) {
                 setGreenIsOpen(true);
+                connection.player.mute(false)
               }
             }
             
@@ -211,8 +217,9 @@ export default function App() {
           }
           if (distancered > 555.2) {
             if (isEKeyPressed) {
-              if(RedIsOpen === false) {
+              if(!RedIsOpen) {
                 setRedIsOpen(true);
+                connection.player.mute(false)
               }
             }
             closest = { distance: distancered, position: obj2.position, name: 'Porkchop' };
@@ -221,7 +228,7 @@ export default function App() {
           }
           if (distancepink < 907.9) {
             if (isEKeyPressed) {
-              if(PinkIsOpen === false) {
+              if(!PinkIsOpen) {
                 setPinkIsOpen(true);
               }
             }
@@ -229,6 +236,18 @@ export default function App() {
           }
           else{
             setPinkIsOpen(false);
+          }
+          if (distanceknife > 1416.65 ) {
+            if (isEKeyPressed) {
+              if(KnifeIsOpen === false && !knifePopupOpened) {
+                setKnifeIsOpen(true);
+                setKnifePopupOpened(true); // Set to true when opened for the first time
+              }
+            }
+            closest = { distance: distanceknife, position: obj4.position, name: 'Knife' };
+          }
+          else{
+            setKnifeIsOpen(false);
           }
           
           if (closest.position) {
@@ -239,7 +258,7 @@ export default function App() {
         }
       
     }
-  }, [isEKeyPressed, GreenIsOpen, RedIsOpen, PinkIsOpen]);
+  }, [isEKeyPressed, GreenIsOpen, RedIsOpen, PinkIsOpen, KnifeIsOpen, knifePopupOpened]);
 
 
 
@@ -285,6 +304,7 @@ export default function App() {
     };
   }, [updateSplineState]);
 
+
   useEffect(() => {
     if (isLoading) {
       setLoadingHTML(
@@ -317,19 +337,26 @@ export default function App() {
     openConnection();
     openConnection1();
     splineRef.current = spline;
+    knife.current = spline.findObjectById('6e03b819-82b7-40c1-9fc3-f868da67c544');
     updateSplineState();
   };
   
 
   const onClose = () => {
-    console.log("close green")
     setGreenIsOpen(false);
-
+    connection.player.mute(true)
   }
 
   const onClose1 = () => {
-    console.log("close red")
     setRedIsOpen(false);
+    connection.player.mute(true)
+    
+  }
+  const onClose2 = () => {
+    splineRef.current.emitEvent('mouseHover', '6e03b819-82b7-40c1-9fc3-f868da67c544');
+    setKnifeIsOpen(false);
+    
+    connection.sendTrigger("found_knife");
   }
 
   
@@ -340,6 +367,26 @@ export default function App() {
         scene="https://prod.spline.design/GYIVEIdMlDugd5IJ/scene.splinecode"
         onLoad={onLoad}
       />
+      <div className='absolute right-10 top-1/3'>
+        <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg mb-5'>
+          {
+            knifePopupOpened ? (
+              
+              <img src='/Knife.png'  className='absolute h-16 w-32 -left-1 object-cover' alt='Knife'/>
+            ) : (
+              <div></div>
+              
+            )
+          }
+        </div>
+        <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg mb-5'>
+
+        </div>
+        <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg'>
+
+        </div>
+        
+      </div>
       {LoadingHTML}
         <Popup onClose={onClose} open={GreenIsOpen}  position="right center">
         
@@ -388,6 +435,30 @@ export default function App() {
                               chatHistory1={chatHistory1}
                               popupInfo={popupInfo}
                             />
+                          
+                        
+                    </div>
+                  </div>
+                  
+              </div>
+          </div>
+        </Popup>
+        <Popup onClose={onClose2} open={KnifeIsOpen} position="right center">
+        
+          <div className="relative  p-4 w-full max-w-2xl ">
+              <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          {popupInfo.name}
+                      </h3>
+                      <button onClick={onClose2}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                      </button>
+                  </div>
+                  <div className="p-4 md:p-5 space-y-4">
+                    <div className="flex justify-center">
+
+                      You have found a knife with blood on it. You put this in a plastic bag and label it.
                           
                         
                     </div>
