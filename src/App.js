@@ -207,6 +207,9 @@ export default function App() {
               if(!GreenIsOpen) {
                 setGreenIsOpen(true);
                 connection.player.mute(false)
+                if(knifePopupOpened){
+                  connection.sendTrigger("found_knife")
+                }
               }
             }
             
@@ -355,8 +358,6 @@ export default function App() {
   const onClose2 = () => {
     splineRef.current.emitEvent('mouseHover', '6e03b819-82b7-40c1-9fc3-f868da67c544');
     setKnifeIsOpen(false);
-    
-    connection.sendTrigger("found_knife");
   }
 
   
