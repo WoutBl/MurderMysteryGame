@@ -16,7 +16,7 @@ export default function App() {
   const [KnifeIsOpen, setKnifeIsOpen] = useState(false);
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
-  const knife = useRef();
+  let count = 0
 
   const [connection, setConnection] = useState();
 
@@ -208,7 +208,7 @@ export default function App() {
                 setGreenIsOpen(true);
                 connection.player.mute(false)
                 if(knifePopupOpened){
-                  connection.sendTrigger("found_knife")
+                  sendTrigger()
                 }
               }
             }
@@ -222,7 +222,7 @@ export default function App() {
             if (isEKeyPressed) {
               if(!RedIsOpen) {
                 setRedIsOpen(true);
-                connection.player.mute(false)
+                connection1.player.mute(false)
               }
             }
             closest = { distance: distancered, position: obj2.position, name: 'Porkchop' };
@@ -340,9 +340,15 @@ export default function App() {
     openConnection();
     openConnection1();
     splineRef.current = spline;
-    knife.current = spline.findObjectById('6e03b819-82b7-40c1-9fc3-f868da67c544');
+    
     updateSplineState();
   };
+
+  const sendTrigger = () => {
+    console.log('sendTrigger');
+    connection.sendTrigger("found_knife")
+    connection.sendTrigger("found_knife")
+  }
   
 
   const onClose = () => {
@@ -357,7 +363,8 @@ export default function App() {
   }
   const onClose2 = () => {
     splineRef.current.emitEvent('mouseHover', '6e03b819-82b7-40c1-9fc3-f868da67c544');
-    setKnifeIsOpen(false);
+    setKnifeIsOpen(false);  
+    
   }
 
   

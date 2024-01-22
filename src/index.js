@@ -1,9 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 //@ts-ignore
 import App from './App';
 import Home from './Views/Home';
+import Finish from './Views/Finish';
 import "./index.css"
 
 
@@ -17,6 +18,14 @@ const router = createBrowserRouter([
 {
     path: '/Game',
     element: <App className="m-0" />,
+},
+{
+  path: '/Finish',
+  element: <Finish  className="m-0" />,
+},
+{
+    path: '*',
+    element: <Navigate to="/" replace />,
 },
   // make not found page
   // {

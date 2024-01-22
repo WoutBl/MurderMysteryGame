@@ -1,6 +1,7 @@
 import { HistoryItem, InworldConnectionService } from '@inworld/web-core';
 import React, { useEffect, useRef } from 'react';
 import { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ChatProps {
   chatHistory: HistoryItem[];
@@ -24,7 +25,7 @@ export function Chat(props: ChatProps) {
         // Code to execute if isPlayer is true
         return (
           <div className='flex  justify-end my-5'>
-            <div className='flex justify-end w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-ee-xl dark:bg-gray-700' key={index}>
+            <div className='flex justify-end w-full max-w-60 leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-ee-xl dark:bg-gray-700' key={index}>
               <div className="flex flex-col items-end">
                 {/* @ts-ignore */}
                 <div className="text-sm mb-1 font-semibold text-gray-900 dark:text-white">Detective Oink</div>
@@ -39,7 +40,7 @@ export function Chat(props: ChatProps) {
         // Code to execute if isPlayer is false
         return (
           <div className='flex  justify-start my-5'>
-            <div className='flex justify-start flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700' key={index}>
+            <div className='flex justify-start flex-col w-full max-w-60 leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700' key={index}>
               <div className="flex flex-col  ">
                   {/* @ts-ignore */}
                   <div className="text-sm mb-1 font-semibold text-gray-900 dark:text-white">{chat.character.displayName}</div>
@@ -95,18 +96,26 @@ export function Chat(props: ChatProps) {
   return(
     
     
-    <div className=''>
-        <div className='max-h-96 mb-5 overflow-y-auto scroll_track scroll_bar scroll_thumb'>
+    <div className='flex flex-col items-center'>
+        <div className='max-h-96 w-full mb-5 overflow-y-auto scroll_track scroll_bar scroll_thumb'>
           {chatHistoryList}
           <div ref={messagesEndRef} />
         </div> 
         <input type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
-        <button type="button" className="absolute right-7 bottom-7" onClick={handleSend}>
+        <button type="button" className="absolute right-7 bottom-[90px]" onClick={handleSend}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/>
           </svg>
         
         </button>
+        <Link
+          className='py-2.5 px-5 mt-5 max-w-32  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
+          //@ts-ignore
+          to={'/finish'}
+          state={{winner: true}}
+        >
+          Arrest Piglett
+        </Link>
     </div>
   )
 }
@@ -121,7 +130,7 @@ export function Chat1(props: Chat1Props) {
         // Code to execute if isPlayer is true
         return (
           <div className='flex  justify-end my-5'>
-            <div className='flex justify-end w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-ee-xl dark:bg-gray-700' key={index}>
+            <div className='flex justify-end w-full max-w-60 leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-ee-xl dark:bg-gray-700' key={index}>
               <div className="flex flex-col items-end">
                 {/* @ts-ignore */}
                 <div className="text-sm mb-1 font-semibold text-gray-900 dark:text-white">Detective Oink</div>
@@ -136,7 +145,7 @@ export function Chat1(props: Chat1Props) {
         // Code to execute if isPlayer is false
         return (
           <div className='flex  justify-start my-5'>
-            <div className='flex justify-start flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700' key={index}>
+            <div className='flex justify-start flex-col w-full max-w-60 leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700' key={index}>
               <div className="flex flex-col  ">
                   {/* @ts-ignore */}
                   <div className="text-sm mb-1 font-semibold text-gray-900 dark:text-white">{chat.character.displayName}</div>
@@ -189,18 +198,26 @@ export function Chat1(props: Chat1Props) {
 
 
   return(
-    <div className=''>
-        <div className='max-h-96 mb-5 overflow-y-auto scroll_track scroll_bar scroll_thumb'>
+    <div className='flex flex-col items-center'>
+        <div className='max-h-96 w-full mb-5 overflow-y-auto scroll_track scroll_bar scroll_thumb'>
           {chatHistoryList1}
           <div ref={messagesEndRef} />
         </div> 
-        <input type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
-        <button type="button" className="absolute right-7 bottom-7" onClick={handleSend}>
+        <input type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
+        <button type="button" className="absolute right-7 bottom-[90px]" onClick={handleSend}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/>
           </svg>
         
         </button>
+        <Link
+          className='py-2.5 px-5 mt-5 max-w-30  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
+          //@ts-ignore
+          to={'/finish'}
+          state={{winner: false}}
+        >
+          Arrest Porkchop
+        </Link>
     </div>
   )
 }
