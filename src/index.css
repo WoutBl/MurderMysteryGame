@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@font-face {
+  font-family: 'Retro';
+  src: url('../public/Retro_Gaming.ttf') format('truetype');
+}
 
 body {
   margin: 0;
@@ -11,6 +14,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.custom-shadow {
+  text-shadow: 3px 3px #00ffff;
+}
+
+.Retro_Style{
+  font-family: 'Retro';
 }
 
 /*

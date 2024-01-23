@@ -206,7 +206,12 @@ export default function App() {
             if (isEKeyPressed) {
               if(!GreenIsOpen) {
                 setGreenIsOpen(true);
-                connection.player.mute(false)
+                try{
+                  connection.player.mute(false)
+                }catch{
+                  console.log("error")
+                }
+                
                 if(knifePopupOpened){
                   sendTrigger()
                 }
@@ -222,6 +227,7 @@ export default function App() {
             if (isEKeyPressed) {
               if(!RedIsOpen) {
                 setRedIsOpen(true);
+
                 connection1.player.mute(false)
               }
             }

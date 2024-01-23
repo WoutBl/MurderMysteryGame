@@ -9,23 +9,34 @@ const Finish: React.FC = (props) => {
     
     <div className='flex flex-col h-screen w-screen justify-center items-center'>
         {state.winner?
-            <div className='flex flex-col h-20  justify-center items-center'>
-                <h1 className="text-3xl font-bold">
-                    You Have Won!
-                    Piglett was the killer, good job!
-                </h1>
+            <div className="bg-black w-full h-screen flex flex-col items-center justify-center text-center px-4">
+                <div className="text-white Retro_Style  text-9xl">YOU WIN</div>
+                {/* Retro-style revelation text */}
+                <p className=" Retro_Style text-4xl text-white mt-4">
+                Piglett was the killer, Good Job!
+                </p>
+                {/* Include the pig image below the text */}
+                <img src='/pig.png' alt="Little Gray Pig" className=" h-60 mt-5" />
+                <a className="mt-8 py-2 px-4 text-lg font-bold text-white bg-purple-700 rounded-full border border-transparent hover:border-purple-300 hover:bg-purple-600 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 active:translate-y-0" href="/">
+                Play Again
+                </a>
             </div>
             :
-            <div className='flex flex-col h-20  justify-center items-center'>
-                <h1 className="text-3xl font-bold">
-                    You Have Lost!
-                    Piglett was the killer, Sorry
-                </h1>
-            </div>}
+            <div className="bg-black w-full h-screen flex flex-col items-center justify-center text-center px-4">
+                <div className="text-white Retro_Style  text-9xl">YOU LOSE</div>
+                {/* Retro-style revelation text */}
+                <p className=" Retro_Style text-4xl text-white mt-4">
+                Piglett was the killer, Try again next time!
+                </p>
+                {/* Include the pig image below the text */}
+                <img src='/pig.png' alt="Little Gray Pig" className="h-60 mt-5" />
+                <a className="mt-8 py-2 px-4 text-lg font-bold text-white bg-purple-700 rounded-full border border-transparent hover:border-purple-300 hover:bg-purple-600 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 active:translate-y-0" href="/">
+                Play Again
+                </a>
+            </div>
+            }
         
-        <a className='py-2.5 px-5 mt-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700' type='button' href="/">
-            Play Again
-        </a>
+        
     </div>
   );
 }

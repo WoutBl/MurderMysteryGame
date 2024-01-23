@@ -3,7 +3,14 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx,html}",
   ],
-  theme: {},
+  theme: {
+    extend: {
+      fontFamily: {
+        Retro: ['Retro', 'sans-serif'], // Add fallback fonts as needed
+      },
+      
+    },
+  },
   plugins: [],
 }
 
