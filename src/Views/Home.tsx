@@ -3,18 +3,18 @@ import React from 'react';
 const Homepage: React.FC = () => {
   return (
     <div className='bg-black text-white flex flex-col h-screen w-screen justify-center items-center'>
-      <div className='grid grid-rows-6 grid-cols-3 gap-4 w-screen h-screen items-center justify-center'>
+      <div className='grid grid-rows-6 grid-cols-3 gap-4 w-screen h-screen  justify-center'>
         {/* Detective Oink Title */}
         <div className="col-span-3 flex justify-center row-span-1">
           <div className="flex flex-col justify-center items-center">
-            <h1 className="text-4xl Retro_Style">Detective Oink</h1>
+            <h1 className=" text-6xl mt-40 Retro_Style">Detective Oink</h1>
             <div className="Retro_Style">Can you solve the Mystery?</div>
           </div>
         </div>
 
         {/* Center Image */}
         <div className="row-span-3 flex justify-center items-center row-start-2">
-          <img src="/3pigs.png" alt="3 pigs" className="h-80 w-80" />
+          <img src="/Start_Pigs.png" alt="3 pigs" className=" min-h-96" />
           {/* Replace '/your-image.png' with your image path */}
         </div>
 
@@ -23,7 +23,7 @@ const Homepage: React.FC = () => {
           <h1 className="text-4xl Retro_Style">
             Movement
           </h1>
-          <div className="Retro_Style">Use the arrow keys on your keyboard to move</div>
+          <div className="Retro_Style text-center">Use the arrow keys on your keyboard to move</div>
         </div>
         <div className="flex flex-col justify-center items-center col-start-3 row-start-3">
           <h1 className="text-4xl Retro_Style">
@@ -36,7 +36,7 @@ const Homepage: React.FC = () => {
         <div className="flex justify-center items-center col-start-1 row-start-4">
           <img className='h-40 w-40' src="/Keyboard_Arrows.png" alt="Keyboard Arrows" />
         </div>
-        <div className="flex justify-center items-center col-start-3 row-start-4">
+        <div className="flex justify-center  col-start-3 row-start-4">
           <div className='flex justify-center items-center w-10 h-10 border-4 border-gray-500 bg-gray-700 Retro_Style rounded'>
             E
           </div>

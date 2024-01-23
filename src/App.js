@@ -17,6 +17,7 @@ export default function App() {
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
+  let closest = { distance: Infinity, position: null, name: '' };
 
   const [connection, setConnection] = useState();
 
@@ -192,8 +193,8 @@ export default function App() {
       
       
       
-
-      if (obj && obj1 && obj2 && obj3 && obj4) {
+      
+      if (obj && obj1 && obj2 && obj3) {
         const distancegreen = obj.position.distanceTo(obj1.position);
         const distancered = obj.position.distanceTo(obj2.position);
         const distancepink = obj.position.distanceTo(obj3.position);
@@ -201,24 +202,24 @@ export default function App() {
 
 
         
-          let closest = { distance: Infinity, position: null, name: '' };
+          
+          
           if (distancegreen > 459) {
             if (isEKeyPressed) {
               if(!GreenIsOpen) {
                 setGreenIsOpen(true);
-                try{
                   connection.player.mute(false)
-                }catch{
-                  console.log("error")
-                }
+
                 
-                if(knifePopupOpened){
+                if(knifePopupOpened && count === 0) {
                   sendTrigger()
+                  count += 1;
                 }
               }
             }
             
             closest = { distance: distancegreen, position: obj1.position, name: 'Piglett' };
+            
           }
           else{
             setGreenIsOpen(false);
@@ -246,18 +247,26 @@ export default function App() {
           else{
             setPinkIsOpen(false);
           }
-          if (distanceknife > 1416.65 ) {
-            if (isEKeyPressed) {
-              if(KnifeIsOpen === false && !knifePopupOpened) {
-                setKnifeIsOpen(true);
-                setKnifePopupOpened(true); // Set to true when opened for the first time
+          
+            if (distanceknife > 1416.65 ) {
+              if (isEKeyPressed && !knifePopupOpened) {
+                if(!KnifeIsOpen ) {
+                  setKnifeIsOpen(true);
+                  setKnifePopupOpened(true); // Set to true when opened for the first time
+                  
+
+                }
+                closest = { distance: distanceknife, position: obj4.position, name: 'Knife' };
+                
               }
+              console.log("close to knife")
+              
+              
             }
-            closest = { distance: distanceknife, position: obj4.position, name: 'Knife' };
-          }
-          else{
-            setKnifeIsOpen(false);
-          }
+            else{
+              setKnifeIsOpen(false);
+            }
+          
           
           if (closest.position) {
             setPopupInfo({ show: true, position: closest.position, name: closest.name });
@@ -267,7 +276,9 @@ export default function App() {
         }
       
     }
-  }, [isEKeyPressed, GreenIsOpen, RedIsOpen, PinkIsOpen, KnifeIsOpen, knifePopupOpened]);
+    console.log(closest);
+    
+  }, [isEKeyPressed, GreenIsOpen, knifePopupOpened, connection, RedIsOpen, connection1, PinkIsOpen, KnifeIsOpen]);
 
 
 
@@ -372,6 +383,11 @@ export default function App() {
     setKnifeIsOpen(false);  
     
   }
+  const onClose3 = () => {
+    
+    setPinkIsOpen(false);  
+    
+  }
 
   
 
@@ -461,10 +477,8 @@ export default function App() {
         
           <div className="relative  p-4 w-full max-w-2xl ">
               <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
-                  <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {popupInfo.name}
-                      </h3>
+                  <div className="flex items-center justify-between p-4 md:p-5  rounded-t dark:border-gray-600">
+                      
                       <button onClick={onClose2}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                       </button>
@@ -472,9 +486,44 @@ export default function App() {
                   <div className="p-4 md:p-5 space-y-4">
                     <div className="flex justify-center">
 
-                      You have found a knife with blood on it. You put this in a plastic bag and label it.
+                      You have found a knife with blood on it. You put this in a plastic bag and put it in you inventory.
                           
                         
+                    </div>
+                  </div>
+                  
+              </div>
+          </div>
+        </Popup>
+        <Popup onClose={onClose3} open={PinkIsOpen} position="right center">
+        
+          <div className="relative  p-4 w-full max-w-2xl ">
+              <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="flex items-center justify-between p-4 md:p-5  rounded-t dark:border-gray-600">
+                      
+                      <button onClick={onClose3}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                      </button>
+                  </div>
+                  <div className="p-4 md:p-5 space-y-4">
+                    <div className="flex  justify-center">
+
+                      You examine Hamm's body. You find a stab wound in his chest. 
+                          
+                        
+                    </div>
+                    <div className="flex text-center justify-center">
+
+                      Next to his body you find some Red Hairs.
+                      You put the Red Hairs in a plastic bag and put it in you inventory.
+                        
+                      
+                    </div>
+                    <div className="flex justify-center">
+
+                      Maybe you should ask Porkchop about this.
+                        
+                      
                     </div>
                   </div>
                   
