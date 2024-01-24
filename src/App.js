@@ -15,8 +15,10 @@ export default function App() {
   const [PinkIsOpen, setPinkIsOpen] = useState(false);
   const [KnifeIsOpen, setKnifeIsOpen] = useState(false);
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
+  const [PinkPopupOpened , setPinkPopupOpened] = useState(false );
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
+  let count1 = 0
   let closest = { distance: Infinity, position: null, name: '' };
 
   const [connection, setConnection] = useState();
@@ -212,7 +214,7 @@ export default function App() {
 
                 
                 if(knifePopupOpened && count === 0) {
-                  sendTrigger()
+                  sendKnifeTrigger()
                   count += 1;
                 }
               }
@@ -230,6 +232,10 @@ export default function App() {
                 setRedIsOpen(true);
 
                 connection1.player.mute(false)
+                if(PinkPopupOpened && count1 === 0) {
+                  sendHairTrigger()
+                  count1 += 1;
+                }
               }
             }
             closest = { distance: distancered, position: obj2.position, name: 'Porkchop' };
@@ -237,12 +243,14 @@ export default function App() {
             setRedIsOpen(false);
           }
           if (distancepink < 907.9) {
-            if (isEKeyPressed) {
+            if (isEKeyPressed && !PinkPopupOpened) {
               if(!PinkIsOpen) {
                 setPinkIsOpen(true);
+                setPinkPopupOpened(true);
               }
+              closest = { distance: distancepink, position: obj3.position, name: 'Hamm' };
             }
-            closest = { distance: distancepink, position: obj3.position, name: 'Hamm' };
+            
           }
           else{
             setPinkIsOpen(false);
@@ -259,7 +267,6 @@ export default function App() {
                 closest = { distance: distanceknife, position: obj4.position, name: 'Knife' };
                 
               }
-              console.log("close to knife")
               
               
             }
@@ -361,10 +368,16 @@ export default function App() {
     updateSplineState();
   };
 
-  const sendTrigger = () => {
-    console.log('sendTrigger');
+  const sendKnifeTrigger = () => {
+    console.log('sendKnifeTrigger');
     connection.sendTrigger("found_knife")
     connection.sendTrigger("found_knife")
+  }
+
+  const sendHairTrigger = () => {
+    console.log('sendHairTrigger');
+    connection1.sendTrigger("found_hair")
+    connection1.sendTrigger("found_hair")
   }
   
 
@@ -410,7 +423,15 @@ export default function App() {
           }
         </div>
         <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg mb-5'>
-
+        {
+            PinkPopupOpened ? (
+              
+              <img src='/HairStrand.png'  className='absolute h-16 w-32 -left-1 object-cover' alt='Hair'/>
+            ) : (
+              <div></div>
+              
+            )
+          }
         </div>
         <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg'>
 
@@ -507,17 +528,11 @@ export default function App() {
                   </div>
                   <div className="p-4 md:p-5 space-y-4">
                     <div className="flex  justify-center">
-
                       You examine Hamm's body. You find a stab wound in his chest. 
-                          
-                        
                     </div>
                     <div className="flex text-center justify-center">
-
                       Next to his body you find some Red Hairs.
                       You put the Red Hairs in a plastic bag and put it in you inventory.
-                        
-                      
                     </div>
                     <div className="flex justify-center">
 
