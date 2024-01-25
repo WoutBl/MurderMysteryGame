@@ -6,7 +6,7 @@ import { Chat, Chat1 } from './ai chat/Chat'
 
 
 export default function App() {
-  
+  console.log(process.env.REACT_APP_INWORLD_SCENE)
   const splineRef = useRef(null);
   const requestRef = useRef();
   const [isEKeyPressed, setIsEKeyPressed] = useState(false);
@@ -68,7 +68,7 @@ export default function App() {
               stop: { duration, ticks },
             },
           }),
-        sceneName: "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green",
+        sceneName: process.env.REACT_APP_INWORLD_SCENE,
         playerName: "Detective Oink",
         
         onReady: async () => {
@@ -89,7 +89,7 @@ export default function App() {
 
       const characters = await service.connection.getCharacters();
       const character = characters.find(
-        (c) => c.resourceName === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green",
+        (c) => c.resourceName === process.env.REACT_APP_INWORLD_SCENE,
       );
 
       if (character) {
@@ -143,7 +143,7 @@ export default function App() {
               stop: { duration, ticks },
             },
           }),
-        sceneName: "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red",
+        sceneName: process.env.REACT_APP_INWORLD_SCENE1,
         playerName: "Detective Oink",
         
         onReady: async () => {
@@ -164,7 +164,7 @@ export default function App() {
 
       const characters = await service.connection.getCharacters();
       const character = characters.find(
-        (c) => c.resourceName === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red",
+        (c) => c.resourceName === process.env.REACT_APP_INWORLD_SCENE1,
       );
 
       if (character) {
