@@ -407,7 +407,7 @@ export default function App() {
   return (
     <div className='h-screen relative'>
       <Spline
-        scene="https://prod.spline.design/GYIVEIdMlDugd5IJ/scene.splinecode"
+        scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode"
         onLoad={onLoad}
       />
       <div className='absolute right-10 top-1/3'>

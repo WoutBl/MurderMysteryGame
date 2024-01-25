@@ -91,7 +91,14 @@ export function Chat(props: ChatProps) {
 
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputElement = useRef(null);
 
+  useEffect(() => {
+    if (inputElement.current) {
+      //@ts-ignore
+      inputElement.current.focus();
+    }
+  }, []);
 
   return(
     
@@ -101,7 +108,7 @@ export function Chat(props: ChatProps) {
           {chatHistoryList}
           <div ref={messagesEndRef} />
         </div> 
-        <input autoFocus type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
+        <input ref={inputElement} type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
         <button type="button" className="absolute right-7 bottom-[90px]" onClick={handleSend}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/>
@@ -125,7 +132,7 @@ export function Chat1(props: Chat1Props) {
   const { chatHistory1, connection, popupInfo } = props;
 
   const chatHistoryList1 = chatHistory1.map((chat, index) => {
-    if (chat.type !== 'interaction_end') {
+    if (chat.type !== 'interaction_end' && chat.type !== 'trigger_event') {
       if (chat.source.isPlayer) {
         // Code to execute if isPlayer is true
         return (
@@ -156,10 +163,10 @@ export function Chat1(props: Chat1Props) {
           </div>
         );
       }
-    } else{
-      return(
+    } else if(chat.type === "trigger_event"){
+      return (
         <div></div>
-      )
+      );
     }
   });
 
@@ -195,7 +202,14 @@ export function Chat1(props: Chat1Props) {
 
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputElement = useRef(null);
 
+  useEffect(() => {
+    if (inputElement.current) {
+      //@ts-ignore
+      inputElement.current.focus();
+    }
+  }, []);
 
   return(
     <div className='flex flex-col items-center'>
@@ -203,7 +217,7 @@ export function Chat1(props: Chat1Props) {
           {chatHistoryList1}
           <div ref={messagesEndRef} />
         </div> 
-        <input autoFocus type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
+        <input ref={inputElement} type="text" value={text} onKeyDown={handleKeyDown} onChange={handleTextChange} className="w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={"What do you want to say to " + popupInfo.name} />
         <button type="button" className="absolute right-7 bottom-[90px]" onClick={handleSend}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/>
