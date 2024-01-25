@@ -17,7 +17,9 @@
     "react-use-refs": "^1.0.1",
     "reactjs-popup": "^2.0.6",
     "ts-node": "^10.9.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@inworld/nodejs-sdk": "^1.10.3"
+    
   },
   "scripts": {
     "start": "react-scripts start",

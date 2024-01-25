@@ -6,7 +6,7 @@ import { Chat, Chat1 } from './ai chat/Chat'
 
 
 export default function App() {
-  console.log(process.env.REACT_APP_INWORLD_SCENE)
+
   const splineRef = useRef(null);
   const requestRef = useRef();
   const [isEKeyPressed, setIsEKeyPressed] = useState(false);
@@ -19,7 +19,7 @@ export default function App() {
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
   let count1 = 0
-  let closest = { distance: Infinity, position: null, name: '' };
+  let closest ={ distance: Infinity, position: null, name: '' };
 
   const [connection, setConnection] = useState();
 
@@ -54,8 +54,6 @@ export default function App() {
       const duration = 0;
       const ticks = 0;
       const previousDialog = false
-
-      console.log('Connecting to Inworld Service');
       const service = new InworldService({
         onHistoryChange: async (history) => {
           setChatHistory(history);
@@ -82,7 +80,7 @@ export default function App() {
             inworldPacket.isEmotion() &&
             inworldPacket.packetId?.interactionId
           ) {
-            console.log("Emotion")
+            console.log("Emotion implemented")
           }
         },
       }); 
@@ -130,7 +128,7 @@ export default function App() {
       const ticks = 0;
       const previousDialog = false
 
-      console.log('Connecting to Inworld Service');
+
       const service = new InworldService({
         onHistoryChange: async (history) => {
           setChatHistory1(history);
@@ -157,7 +155,7 @@ export default function App() {
             inworldPacket.isEmotion() &&
             inworldPacket.packetId?.interactionId
           ) {
-            console.log("lol")
+            console.log("Emotion implemented")
           }
         },
       });
@@ -283,7 +281,6 @@ export default function App() {
         }
       
     }
-    console.log(closest);
     
   }, [isEKeyPressed, GreenIsOpen, knifePopupOpened, connection, RedIsOpen, connection1, PinkIsOpen, KnifeIsOpen]);
 
@@ -369,13 +366,11 @@ export default function App() {
   };
 
   const sendKnifeTrigger = () => {
-    console.log('sendKnifeTrigger');
     connection.sendTrigger("found_knife")
     connection.sendTrigger("found_knife")
   }
 
   const sendHairTrigger = () => {
-    console.log('sendHairTrigger');
     connection1.sendTrigger("found_hair")
     connection1.sendTrigger("found_hair")
   }

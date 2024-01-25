@@ -136,7 +136,7 @@ export function Chat1(props: Chat1Props) {
       if (chat.source.isPlayer) {
         // Code to execute if isPlayer is true
         return (
-          <div className='flex  justify-end my-5'>
+          <div key={index} className='flex  justify-end my-5'>
             <div className='flex justify-end w-full max-w-60 leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-ee-xl dark:bg-gray-700' key={index}>
               <div className="flex flex-col items-end">
                 {/* @ts-ignore */}
@@ -151,7 +151,7 @@ export function Chat1(props: Chat1Props) {
       } else {
         // Code to execute if isPlayer is false
         return (
-          <div className='flex  justify-start my-5'>
+          <div key={index} className='flex  justify-start my-5'>
             <div className='flex justify-start flex-col w-full max-w-60 leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700' key={index}>
               <div className="flex flex-col  ">
                   {/* @ts-ignore */}

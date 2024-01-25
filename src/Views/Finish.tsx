@@ -3,8 +3,6 @@ import { useLocation } from "react-router-dom";
 
 const Finish: React.FC = (props) => {
     const { state } = useLocation();
-    //@ts-ignore
-    console.log(state.winner)
   return (
     
     <div className='flex flex-col h-screen w-screen justify-center items-center'>
