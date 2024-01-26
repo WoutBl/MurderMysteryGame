@@ -3,6 +3,7 @@ import Spline from "@splinetool/react-spline";
 import Popup from 'reactjs-popup';
 import { InworldService } from './ai chat/connection'
 import { Chat, Chat1 } from './ai chat/Chat'
+import ReactPlayer from 'react-player'
 
 
 export default function App() {
@@ -402,10 +403,14 @@ export default function App() {
     
   }
 
+  const Ended = () => {
+    console.log('ended');
+  }
   
 
   return (
     <div className='h-screen relative'>
+      <ReactPlayer playing={true} onEnded={Ended} url={'/CutScene.mp4'}/>
       <Spline
         scene="https://prod.spline.design/GYIVEIdMlDugd5IJ/scene.splinecode"
         onLoad={onLoad}
