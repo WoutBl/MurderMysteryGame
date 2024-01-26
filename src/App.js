@@ -17,6 +17,7 @@ export default function App() {
   const [KnifeIsOpen, setKnifeIsOpen] = useState(false);
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [PinkPopupOpened , setPinkPopupOpened] = useState(false );
+  const [VideoIsOpen, SetVideoIsOpen] = useState()
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
   let count1 = 0
@@ -356,7 +357,7 @@ export default function App() {
   
 
   const onLoad = (spline) => {
-    
+    SetVideoIsOpen(true)
     setIsLoading(false)
       
     openConnection();
@@ -397,15 +398,21 @@ export default function App() {
     setPinkIsOpen(false);  
     
   }
+  
 
+  
+  
   const Ended = () => {
     console.log('ended');
+    SetVideoIsOpen(false)
   }
   
 
   return (
     <div className='h-screen relative'>
-      <ReactPlayer playing={true} onEnded={Ended} url={'/CutScene.mp4'}/>
+      <Popup open={VideoIsOpen} className='!h-screen !w-screen '>
+        <ReactPlayer className=' !h-screen !w-screen object-cover' playing={true} onEnded={Ended} url={'/CutScene.mp4'}/>
+      </Popup>
       <Spline
         scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode"
         onLoad={onLoad}
