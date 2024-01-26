@@ -4,16 +4,10 @@
   "private": true,
   "main": "./src/Router/index.tsx",
   "dependencies": {
-    "@react-three/drei": "^9.93.0",
-    "@react-three/fiber": "^8.15.13",
-    "@splinetool/loader": "^1.0.19",
-    "@splinetool/r3f-spline": "^1.0.2",
     "@splinetool/react-spline": "^2.2.6",
-    "@splinetool/runtime": "^1.0.19",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "http-server": "^14.1.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.2",
     "react": "^18.2.0",
@@ -23,11 +17,12 @@
     "react-scripts": "5.0.1",
     "react-use-refs": "^1.0.1",
     "reactjs-popup": "^2.0.6",
-    "sort-by": "^1.2.0",
-    "three": "^0.160.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@inworld/nodejs-sdk": "^1.10.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "ts-node": "^10.9.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -55,7 +50,10 @@
   },
   "devDependencies": {
     "@inworld/web-core": "^2.1.1",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "typescript": "^5.3.3"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "author": "",

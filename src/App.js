@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player'
 
 
 export default function App() {
-  
+
   const splineRef = useRef(null);
   const requestRef = useRef();
   const [isEKeyPressed, setIsEKeyPressed] = useState(false);
@@ -20,7 +20,7 @@ export default function App() {
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
   let count1 = 0
-  let closest = { distance: Infinity, position: null, name: '' };
+  let closest ={ distance: Infinity, position: null, name: '' };
 
   const [connection, setConnection] = useState();
 
@@ -55,8 +55,6 @@ export default function App() {
       const duration = 0;
       const ticks = 0;
       const previousDialog = false
-
-      console.log('Connecting to Inworld Service');
       const service = new InworldService({
         onHistoryChange: async (history) => {
           setChatHistory(history);
@@ -69,7 +67,7 @@ export default function App() {
               stop: { duration, ticks },
             },
           }),
-        sceneName: "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green",
+        sceneName: process.env.REACT_APP_INWORLD_SCENE,
         playerName: "Detective Oink",
         
         onReady: async () => {
@@ -83,14 +81,14 @@ export default function App() {
             inworldPacket.isEmotion() &&
             inworldPacket.packetId?.interactionId
           ) {
-            console.log("Emotion")
+            console.log("Emotion implemented")
           }
         },
       }); 
 
       const characters = await service.connection.getCharacters();
       const character = characters.find(
-        (c) => c.resourceName === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_green",
+        (c) => c.resourceName === process.env.REACT_APP_INWORLD_SCENE,
       );
 
       if (character) {
@@ -131,7 +129,7 @@ export default function App() {
       const ticks = 0;
       const previousDialog = false
 
-      console.log('Connecting to Inworld Service');
+
       const service = new InworldService({
         onHistoryChange: async (history) => {
           setChatHistory1(history);
@@ -144,7 +142,7 @@ export default function App() {
               stop: { duration, ticks },
             },
           }),
-        sceneName: "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red",
+        sceneName: process.env.REACT_APP_INWORLD_SCENE1,
         playerName: "Detective Oink",
         
         onReady: async () => {
@@ -158,14 +156,14 @@ export default function App() {
             inworldPacket.isEmotion() &&
             inworldPacket.packetId?.interactionId
           ) {
-            console.log("lol")
+            console.log("Emotion implemented")
           }
         },
       });
 
       const characters = await service.connection.getCharacters();
       const character = characters.find(
-        (c) => c.resourceName === "workspaces/default-wg5alkcmfch8nlkl72oy1w/characters/pig_red",
+        (c) => c.resourceName === process.env.REACT_APP_INWORLD_SCENE1,
       );
 
       if (character) {
@@ -284,7 +282,6 @@ export default function App() {
         }
       
     }
-    console.log(closest);
     
   }, [isEKeyPressed, GreenIsOpen, knifePopupOpened, connection, RedIsOpen, connection1, PinkIsOpen, KnifeIsOpen]);
 
@@ -370,13 +367,11 @@ export default function App() {
   };
 
   const sendKnifeTrigger = () => {
-    console.log('sendKnifeTrigger');
     connection.sendTrigger("found_knife")
     connection.sendTrigger("found_knife")
   }
 
   const sendHairTrigger = () => {
-    console.log('sendHairTrigger');
     connection1.sendTrigger("found_hair")
     connection1.sendTrigger("found_hair")
   }
@@ -412,7 +407,7 @@ export default function App() {
     <div className='h-screen relative'>
       <ReactPlayer playing={true} onEnded={Ended} url={'/CutScene.mp4'}/>
       <Spline
-        scene="https://prod.spline.design/GYIVEIdMlDugd5IJ/scene.splinecode"
+        scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode"
         onLoad={onLoad}
       />
       <div className='absolute right-10 top-1/3'>
