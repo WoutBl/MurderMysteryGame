@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import Spline from "@splinetool/react-spline";
 import Popup from 'reactjs-popup';
 import { InworldService } from './ai chat/connection'
 import { Chat, Chat1 } from './ai chat/Chat'
-import ReactPlayer from 'react-player'
+
+import Spline from "@splinetool/react-spline";
 
 
 export default function App() {
 
   const splineRef = useRef(null);
+
   const requestRef = useRef();
   const [isEKeyPressed, setIsEKeyPressed] = useState(false);
   const [GreenIsOpen, setGreenIsOpen] = useState(false);
@@ -39,6 +40,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   const [LoadingHTML, setLoadingHTML] = useState();
+  const [VideoHTML, setVideoHTML] = useState();
 
   const openConnection = useCallback(
     async (previousState) => {
@@ -403,20 +405,26 @@ export default function App() {
   
   
   const Ended = () => {
-    console.log('ended');
-    SetVideoIsOpen(false)
-  }
-  
+    console.log("ended");
+    SetVideoIsOpen(false); // Ensure this matches the state update function name
+  };
+
+  useEffect(() => {
+    console.log("VideoIsOpen changed to: ", VideoIsOpen);
+  }, [VideoIsOpen]);
 
   return (
-    <div className='h-screen relative'>
-      <Popup open={VideoIsOpen} className='!h-screen !w-screen '>
-        <ReactPlayer className=' !h-screen !w-screen object-cover' playing={true} onEnded={Ended} url={'/CutScene.mp4'}/>
-      </Popup>
-      <Spline
-        scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode"
-        onLoad={onLoad}
-      />
+    <div key={VideoIsOpen ? 'video-on' : 'video-off'} className='h-screen relative'>
+      
+      {VideoIsOpen && (
+      <video autoPlay onEnded={Ended} className='absolute h-full w-full object-cover'>
+        <source src='/CutScene.mp4' type='video/mp4'/>
+      </video>
+    )}
+      
+      
+        <Spline onLoad={onLoad} scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode" />
+      
       <div className='absolute right-10 top-1/3'>
         <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg mb-5'>
           {
