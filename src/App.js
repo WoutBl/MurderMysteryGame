@@ -17,7 +17,7 @@ export default function App() {
   const [KnifeIsOpen, setKnifeIsOpen] = useState(false);
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [PinkPopupOpened , setPinkPopupOpened] = useState(false );
-  const [VideoIsOpen, SetVideoIsOpen] = useState()
+  const [VideoIsOpen, SetVideoIsOpen] = useState(true)
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
   let count1 = 0
@@ -357,7 +357,7 @@ export default function App() {
   
 
   const onLoad = (spline) => {
-    SetVideoIsOpen(true)
+
     setIsLoading(false)
       
     openConnection();
