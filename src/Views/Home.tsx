@@ -44,7 +44,7 @@ const Homepage: React.FC = () => {
 
         {/* Play Game Button */}
         <div className="flex justify-center items-center col-span-3 row-start-5">
-          <a href="/game" className="px-10 py-4 bg-gray-700 text-2xl Retro_Style border border-gray-500 hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-400 rounded transition duration-150 ease-in-out">
+          <a href="/Cutscene" className="px-10 py-4 bg-gray-700 text-2xl Retro_Style border border-gray-500 hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-400 rounded transition duration-150 ease-in-out">
             Play Game
           </a>
         </div>

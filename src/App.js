@@ -18,7 +18,7 @@ export default function App() {
   const [KnifeIsOpen, setKnifeIsOpen] = useState(false);
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [PinkPopupOpened , setPinkPopupOpened] = useState(false );
-  const [VideoIsOpen, SetVideoIsOpen] = useState(true)
+
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
   let count1 = 0
@@ -40,7 +40,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   const [LoadingHTML, setLoadingHTML] = useState();
-  const [VideoHTML, setVideoHTML] = useState();
 
   const openConnection = useCallback(
     async (previousState) => {
@@ -403,24 +402,13 @@ export default function App() {
   
 
   
-  
-  const Ended = () => {
-    console.log("ended");
-    SetVideoIsOpen(false); // Ensure this matches the state update function name
-  };
 
-  useEffect(() => {
-    console.log("VideoIsOpen changed to: ", VideoIsOpen);
-  }, [VideoIsOpen]);
+
 
   return (
-    <div key={VideoIsOpen ? 'video-on' : 'video-off'} className='h-screen relative'>
+    <div className='h-screen relative'>
       
-      {VideoIsOpen && (
-      <video autoPlay onEnded={Ended} className='absolute h-full w-full object-cover'>
-        <source src='/CutScene.mp4' type='video/mp4'/>
-      </video>
-    )}
+      
       
       
         <Spline onLoad={onLoad} scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode" />

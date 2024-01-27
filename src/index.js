@@ -5,6 +5,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import App from './App';
 import Home from './Views/Home';
 import Finish from './Views/Finish';
+import Cutscene from './Views/Cutscene';
 import "./index.css"
 
 
@@ -15,9 +16,14 @@ const router = createBrowserRouter([
     path: '/',
     element: <Home />,
   },
+  
 {
     path: '/Game',
     element: <App className="m-0" />,
+},
+{
+  path: '/Cutscene',
+  element: <Cutscene className="m-0" />,
 },
 {
   path: '/Finish',
