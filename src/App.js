@@ -19,6 +19,11 @@ export default function App() {
   const [knifePopupOpened ,setKnifePopupOpened] = useState(false);
   const [PinkPopupOpened , setPinkPopupOpened] = useState(false );
 
+  const [showInteractionMessageGreen, setShowInteractionMessageGreen] = useState(false);
+  const [showInteractionMessageRed, setShowInteractionMessageRed] = useState(false);
+  const [showInteractionMessagePink, setShowInteractionMessagePink] = useState(false);
+  const [showInteractionMessageKnife, setShowInteractionMessageKnife] = useState(false);
+
   const [popupInfo, setPopupInfo] = useState({ show: false, name: '' });
   let count = 0
   let count1 = 0
@@ -208,6 +213,7 @@ export default function App() {
           
           
           if (distancegreen > 459) {
+            setShowInteractionMessageGreen(true);
             if (isEKeyPressed) {
               if(!GreenIsOpen) {
                 setGreenIsOpen(true);
@@ -225,9 +231,11 @@ export default function App() {
             
           }
           else{
+            setShowInteractionMessageGreen(false);
             setGreenIsOpen(false);
           }
           if (distancered > 555.2) {
+            setShowInteractionMessageRed(true);
             if (isEKeyPressed) {
               if(!RedIsOpen) {
                 setRedIsOpen(true);
@@ -241,9 +249,11 @@ export default function App() {
             }
             closest = { distance: distancered, position: obj2.position, name: 'Porkchop' };
           }else{
+            setShowInteractionMessageRed(false)
             setRedIsOpen(false);
           }
           if (distancepink < 907.9) {
+            setShowInteractionMessagePink(true);
             if (isEKeyPressed && !PinkPopupOpened) {
               if(!PinkIsOpen) {
                 setPinkIsOpen(true);
@@ -254,10 +264,12 @@ export default function App() {
             
           }
           else{
+            setShowInteractionMessagePink(false);
             setPinkIsOpen(false);
           }
           
             if (distanceknife > 1416.65 ) {
+              setShowInteractionMessageKnife(true);
               if (isEKeyPressed && !knifePopupOpened) {
                 if(!KnifeIsOpen ) {
                   setKnifeIsOpen(true);
@@ -272,6 +284,7 @@ export default function App() {
               
             }
             else{
+              setShowInteractionMessageKnife(false);
               setKnifeIsOpen(false);
             }
           
@@ -395,12 +408,9 @@ export default function App() {
     
   }
   const onClose3 = () => {
-    
-    setPinkIsOpen(false);  
-    
+    setPinkIsOpen(false);
   }
   
-
   
 
 
@@ -413,6 +423,15 @@ export default function App() {
       
         <Spline onLoad={onLoad} scene="https://prod.spline.design/wbUCB8Y207mDosxh/scene.splinecode" />
       
+      {
+        showInteractionMessageGreen || showInteractionMessageRed || showInteractionMessagePink || showInteractionMessageKnife ? (
+          <div className='absolute  text-white font-bold p-2 items-center gap-1 bottom-5 right-5 flex border-4 border-gray-700 bg-gray-600/90  rounded-lg mb-5'>
+            Press <span className='flex justify-center items-center w-10 h-10 border-4 text-white border-gray-500 bg-gray-700 Retro_Style rounded'> E </span> to interact
+          </div>
+        ) : (
+          <div></div>
+        )
+      }
       <div className='absolute right-10 top-1/3'>
         <div className='border-4 border-gray-700 bg-gray-600/90 w-20 h-20 rounded-lg mb-5'>
           {
